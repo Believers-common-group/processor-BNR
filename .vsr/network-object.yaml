@@ -1,0 +1,22 @@
+schema: vsr.network-object/v1
+network_object: BNR-REPO-UPSTREAM-GITHUB-MCP-001
+repo_role: upstream-mirror
+authority_boundary: NONE
+canonical_source:
+  repository: github/github-mcp-server
+  branch: main
+  contract: README.md
+depends_on: []
+consumed_by: []
+lineage:
+  predecessor: null
+  supersedes: null
+  superseded_by: null
+status: review
+provenance:
+  upstream:
+    - github/github-mcp-server
+  licence_review_required: true
+contribution:
+  architecture_decisions_repo: Believers-common-group/SynergyzeGovernance
+  architectural_change_requires_network_object_id: true
