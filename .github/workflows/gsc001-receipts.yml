@@ -1,0 +1,21 @@
+name: GSC-001 detached receipt reference
+on:
+  pull_request:
+    paths: ['pkg/gsc001/**','.github/workflows/gsc001-receipts.yml']
+  push:
+    branches: [genesis]
+    paths: ['pkg/gsc001/**','.github/workflows/gsc001-receipts.yml']
+permissions:
+  contents: read
+jobs:
+  receipts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Run receipt unit tests
+        run: go test ./pkg/gsc001 -v
