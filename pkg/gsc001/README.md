@@ -1,6 +1,8 @@
-# GSC-001 receipt prototype for BNR processor
-Genesis Change Envelope: GEN-CHG-20261028-GSC001; parent draft genesis-stack PR #80.
+# GSC-001 R0.2 — BNR processor evidence candidates
+Change Envelope `GEN-CHG-20261028-GSC001`; parent governance draft [genesis-stack PR #80](https://github.com/Believers-common-group/genesis-stack/pull/80).
 
-The Go receipt library creates and verifies detached hash-linked receipts for event provenance and auditability. It does not write to RiverOS, sign evidence, issue an authority grant, or perform an external timestamp. It cannot prove that an observation is true; it only establishes whether the serialized local receipt chain has changed. Receipts may be used as candidates for the *future* RiverOS evidence adapter, contingent on Warden approval and verified identity. No independently available repository named `Believers-common-group/RiverOS` was found.
+The `receipt.go` reference produces a detached SHA-256-linked receipt chain and detects alteration, broken linkage and duplicate event IDs. `admission.go` verifies candidate source bytes against the supplied SHA-256 before producing a receipt marked **EVIDENCE_CANDIDATE_PENDING_RIVEROS**. This check cannot label evidence independently verified and cannot establish causality or grant authority.
 
-Run `go test ./pkg/gsc001 -v` using the repository-pinned Go toolchain (go.mod requires Go 1.24). 
+Run `go test ./pkg/gsc001 -v` under the repository-pinned Go toolchain. Scoped GitHub CI runs the same package tests.
+
+**No durable RiverOS writer, external timestamp, institutional attestation, signed trusted identity, or real persistence is implemented.** Existing repository-wide Go linter/toolchain CI problems remain separate and unresolved.
