@@ -43,7 +43,7 @@ func TestWrongEvidenceRejected(t *testing.T) {
  o:=outbox(t);c,_:=candidate("1")
  if _,err:=o.Append(c,[]byte("wrong bytes"));err==nil {t.Fatal("hash mismatch admitted")}
 }
-func TestTamperDetected(t *testing.T) {
+func TestPendingCustodyTamperDetected(t *testing.T) {
  o:=outbox(t);c,b:=candidate("1")
  if _,err:=o.Append(c,b);err!=nil {t.Fatal(err)}
  data,err:=os.ReadFile(o.Path);if err!=nil {t.Fatal(err)}
