@@ -83,3 +83,15 @@ func TestMissingCreatesBlankOutbox(t *testing.T) {
  o:=outbox(t)
  n,err:=o.Verify();if err!=nil || n!=0 {t.Fatal(n,err)}
 }
+
+func TestUnattestedBreachCannotEnterPendingOutbox(t *testing.T) {
+ o:=outbox(t);c,b:=candidate("suspected-1")
+ c.Outcome="CONTROL_BREACH"
+ if _,err:=o.Append(c,b);err==nil {t.Fatal("unattested breach inserted")}
+ n,err:=o.Verify();if err!=nil || n!=0 {t.Fatalf("recorded unsafe outcome: %d %v",n,err)}
+}
+func TestUnattestedVerifiedCannotEnterPendingOutbox(t *testing.T) {
+ o:=outbox(t);c,b:=candidate("suspected-2")
+ c.Outcome="VERIFIED"
+ if _,err:=o.Append(c,b);err==nil {t.Fatal("unattested VERIFIED inserted")}
+}

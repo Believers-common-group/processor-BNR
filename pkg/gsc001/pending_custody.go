@@ -49,6 +49,9 @@ func VerifyPending(data []byte) ([]PendingRecord, error) {
     }
     if len(r.CandidateSHA256)!=64 {return nil,errors.New("bad candidate hash")}
     if _,err:=hex.DecodeString(r.CandidateSHA256);err!=nil{return nil,err}
+    if r.Receipt.Outcome=="VERIFIED" || r.Receipt.Outcome=="CONTROL_BREACH" {
+      return nil,errors.New("unattested outcome prohibited in pending custody")
+    }
     if seen[r.Receipt.EventID] {return nil,errors.New("duplicate custody event")}
     seen[r.Receipt.EventID]=true
     receipts=append(receipts,r.Receipt)
@@ -105,6 +108,9 @@ func (o PendingOutbox) Append(candidate EvidenceCandidate, evidenceBytes []byte)
   for _,entry:=range previous {
     if entry.Receipt.EventID==candidate.EventID{return PendingRecord{},errors.New("duplicate or conflicting custody event")}
     prior=entry.Receipt.Hash
+  }
+  if candidate.Outcome=="VERIFIED" || candidate.Outcome=="CONTROL_BREACH" {
+    return PendingRecord{},errors.New("independent proof required for verified or breach outcome")
   }
   result,err:=CheckCandidate(candidate,evidenceBytes,prior)
   if err!=nil{return PendingRecord{},err}
