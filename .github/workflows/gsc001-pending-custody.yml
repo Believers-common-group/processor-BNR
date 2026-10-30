@@ -1,0 +1,20 @@
+name: GSC-001 pending custody local outbox
+on:
+  pull_request:
+    paths: ['pkg/gsc001/**','.github/workflows/gsc001-pending-custody.yml']
+  push:
+    branches: [genesis]
+    paths: ['pkg/gsc001/**','.github/workflows/gsc001-pending-custody.yml']
+permissions:
+  contents: read
+jobs:
+  local-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+      - run: go test ./pkg/gsc001 -v
